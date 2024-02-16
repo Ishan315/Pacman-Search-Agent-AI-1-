@@ -112,11 +112,49 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    initialState = problem.getStartState()
+    """
+    Using stack since it is a DFS.
+    The stack will store the search nodes.
+    A single search node is a tuple of (State, actions)
+    """
+    fringe = util.Queue()
+    visited = []
+    fringe.push((initialState, []))
+    while fringe.isEmpty() == False:
+        currentState, actions = fringe.pop()
+        if currentState not in visited:
+            if problem.isGoalState(currentState):
+                return actions
+            visited.append(currentState)
+            successorsList = problem.getSuccessors(currentState)
+            for successor, action, stepCost in successorsList:
+                fringe.push((successor,actions + [action]))
+
+            
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+    initialState = problem.getStartState()
+    """
+    Using stack since it is a DFS.
+    The stack will store the search nodes.
+    A single search node is a tuple of (State, actions)
+    """
+    fringe = util.PriorityQueue()
+    visited = []
+    fringe.push((initialState, 0, []), 0)
+    while fringe.isEmpty() == False:
+        currentState, cost, actions = fringe.pop()
+        if currentState not in visited:
+            if problem.isGoalState(currentState):
+                return actions
+            visited.append(currentState)
+            successorsList = problem.getSuccessors(currentState)
+            for successor, action, stepCost in successorsList:
+                fringe.push((successor, cost + stepCost, actions + [action]), cost + stepCost)
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
